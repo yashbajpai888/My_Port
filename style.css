@@ -51,7 +51,8 @@ nav ul li :hover{
 .firstSection{
     display: flex;  
     justify-content: space-around;
-    margin: 23px 0;
+    /*margin: 23px 0; */ /*this is change to try */
+    margin: auto;
     align-items: center;
     
 }
