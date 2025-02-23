@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Girlfriend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .chat-container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #f9f9f9;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      background: #e1f5fe;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+    .message.self {
+      background: #dcedc8;
+      margin-left: auto;
+    }
+    .media {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    .input-container {
+      display: flex;
+      gap: 10px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .file-upload {
+      padding: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button {
+      padding: 10px 20px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chat with Girlfriend</h1>
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <!-- Chat messages will appear here -->
+    </div>
+    <div class="input-container">
+      <input type="text" id="message-input" placeholder="Type a message...">
+      <label for="file-input" class="file-upload">Upload Media</label>
+      <input type="file" id="file-input" accept="image/*, video/*">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const messageInput = document.getElementById('message-input');
+    const fileInput = document.getElementById('file-input');
+
+    // Function to add a message to the chat box
+    function addMessage(message, isSelf = true, mediaUrl = null) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message');
+      if (isSelf) messageElement.classList.add('self');
+
+      if (mediaUrl) {
+        const mediaElement = document.createElement(mediaUrl.includes('image') ? 'img' : 'video');
+        mediaElement.src = mediaUrl;
+        mediaElement.classList.add('media');
+        messageElement.appendChild(mediaElement);
+      } else {
+        messageElement.textContent = message;
+      }
+
+      chatBox.appendChild(messageElement);
+      chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    }
+
+    // Function to send a message
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      const file = fileInput.files[0];
+
+      if (message || file) {
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            addMessage('', true, e.target.result); // Display uploaded media
+          };
+          reader.readAsDataURL(file);
+        } else {
+          addMessage(message, true); // Display text message
+        }
+
+        // Clear inputs
+        messageInput.value = '';
+        fileInput.value = '';
+      }
+    }
+
+    // Example messages (you can remove this)
+    addMessage('Hey! How are you?', false);
+    addMessage('I sent you a picture!', false, 'https://via.placeholder.com/200');
+    addMessage('I\'m good! Check this out:', true, 'https://via.placeholder.com/200');
+  </script>
+</body>
+</html>
